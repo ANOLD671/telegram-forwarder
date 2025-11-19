@@ -1,0 +1,43 @@
+﻿name: Run Telegram Bot
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'  # Restart every 6 hours
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360  # 6 hours max
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Create env file
+      run: |
+        cat << EOF > .env
+        API_ID=${{ secrets.API_ID }}
+        API_HASH=${{ secrets.API_HASH }}
+        SESSION_STRING=${{ secrets.SESSION_STRING }}
+        SOURCE_CHANNELS=@myachPRO,@FabrizioRomanoTG
+        TARGET_CHANNEL=@livefootball_671
+        ENABLE_TRANSLATION=true
+        REMOVE_SOURCE=true
+        KEYWORDS=
+        BLOCKED_WORDS=spam,advertisement,scam
+        EOF
+    
+    - name: Run bot
+      run: npm start
+      timeout-minutes: 355  # 5 minutes less than job timeout
