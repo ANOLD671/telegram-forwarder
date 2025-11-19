@@ -1,0 +1,14 @@
+{
+  "name": "telegram-copier-bot",
+  "version": "1.0.0",
+  "description": "Telegram message copier bot",
+  "main": "copier.js",
+  "scripts": {
+    "start": "node copier.js"
+  },
+  "dependencies": {
+    "@iamtraction/google-translate": "^2.0.1",
+    "dotenv": "^16.3.1",
+    "telegram": "^2.26.21"
+  }
+}
